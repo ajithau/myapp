@@ -4,6 +4,8 @@ namespace App\Listeners;
 
 use Illuminate\Auth\Events\Registered;
 use Database\Seeders\PostSeeder;
+use App\Imports\PostsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SendUserRegisterNotification
 {
@@ -27,5 +29,6 @@ class SendUserRegisterNotification
     {
         $seeder = new PostSeeder;
         $seeder->run($event->user->id);
+        Excel::import(new PostsImport, 'post.xlsx');
     }
 }

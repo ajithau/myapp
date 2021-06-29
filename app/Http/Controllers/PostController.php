@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use App\Imports\PostsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class PostController extends Controller
 {
     /**
@@ -16,7 +19,10 @@ class PostController extends Controller
     public function index()
     {
         // DB::enableQueryLog();
-        return Post::select('title', 'excerpt')->where('user_id', Auth::user()->id)->get();
+        $posts = Post::select('title', 'excerpt')->where('user_id', Auth::user()->id)->get();
+        Excel::import(new PostsImport, storage_path('app/public/comment/post.xlsx') );
+        return view('posts/index', ['posts' => $posts]);
+
         // $query = DB::getQueryLog();
     }
 
