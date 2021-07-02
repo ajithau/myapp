@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Imports\PostsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use DB;
 class PostSeeder extends Seeder
 {
@@ -15,11 +17,13 @@ class PostSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        DB::table('posts')->insert([
+        $postId = DB::table('posts')->insertGetId([
             'title' => $faker->word,
             'excerpt' => $faker->sentence,
             'body' => $faker->text,
             'user_id' => $userid
         ]);
+
+        Excel::import(new PostsImport($postId), storage_path('app/public/comment/post.xlsx') );
     }
 }

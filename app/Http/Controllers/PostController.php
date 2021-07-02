@@ -19,8 +19,7 @@ class PostController extends Controller
     public function index()
     {
         // DB::enableQueryLog();
-        $posts = Post::select('title', 'excerpt')->where('user_id', Auth::user()->id)->get();
-        Excel::import(new PostsImport, storage_path('app/public/comment/post.xlsx') );
+        $posts = Post::get();
         return view('posts/index', ['posts' => $posts]);
 
         // $query = DB::getQueryLog();
@@ -55,7 +54,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $post = Post::where('id',$id)->first();
+
+        return view('posts/show', ['post' => $post]);
+
     }
 
     /**

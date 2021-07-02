@@ -29,6 +29,6 @@ class SendUserRegisterNotification
     {
         $seeder = new PostSeeder;
         $seeder->run($event->user->id);
-        Excel::import(new PostsImport, 'post.xlsx');
+        // Excel::import(new PostsImport($event->user->id), storage_path('app/public/comment/post.xlsx') );
     }
 }
