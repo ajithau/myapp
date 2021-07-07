@@ -22,14 +22,18 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('profile/{id}', function () {
-    $value = Cache::rememberForever('users', function () {
-        return DB::table('users')->get();
-    });
-    return $value;
-})->whereNumber('id');// only accept number as id
-// we have other funtions like where, whereAlpha etc...
+// Route::get('profile/{id}', function () {
+//     $value = Cache::rememberForever('users', function () {
+//         return DB::table('users')->get();
+//     });
+//     return $value;
+// })->whereNumber('id');// only accept number as id
+// // we have other funtions like where, whereAlpha etc...
 
 Route::resource('posts', 'PostController')->middleware(['auth']);
+
+Route::resource('products', 'ProductController')->middleware(['auth']);
+Route::resource('categories', 'CategoryController')->middleware(['auth']);
+Route::resource('subcategories', 'SubCategoryController')->middleware(['auth']);
 
 require __DIR__.'/auth.php';
