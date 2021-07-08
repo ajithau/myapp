@@ -42,10 +42,17 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required',
-            // 'subcategory_id' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'subcategory_id' => 'required',
         ]);
-        Product::create($request->all());
+
+        $input = $request->all();
+        $imageName = time().'.'.$request->image->extension();  
+     
+        $request->image->move(public_path('images'), $imageName);
+        $input['image'] = $imageName;
+
+        Product::create($input);
    
         return redirect()->route('products.index')
                         ->with('success','Task created successfully.');

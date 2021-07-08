@@ -9,6 +9,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Created</h>
+                <th>Image</h>
                 <th>Action</th>
             </tr>
         </thead>
@@ -18,6 +19,7 @@
                 <td>{{$product->name}}</td>
                 <td>{{$product->description}}</td>
                 <td>{{$product->created_at}}</td>
+                <td><img src="{{url('/').'/images/'.$product->image}}" class="object-contain h-28 w-28"></td>
                 <td>
                     <a href="{{ route('products.edit',$product->id) }}">
                         <i class="far fa-edit"></i>
