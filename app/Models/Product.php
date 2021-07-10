@@ -15,4 +15,9 @@ class Product extends Model
         'image',
         'subcategory_id'
     ];
+
+    public function gallery()
+    {
+        return $this->hasMany(Gallery::class);
+    }
 }

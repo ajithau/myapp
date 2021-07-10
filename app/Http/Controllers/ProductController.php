@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Gallery;
 use Illuminate\Http\Request;
 use DB;
 class ProductController extends Controller
@@ -15,7 +16,13 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::get();
-        return view('products.index', ['products' => $products]);
+
+        if( request()->is('api/*')){
+            return $products;
+        }else{
+            //a web call
+            return view('products.index', ['products' => $products]);
+        }
     }
 
     /**
@@ -52,7 +59,20 @@ class ProductController extends Controller
         $request->image->move(public_path('images'), $imageName);
         $input['image'] = $imageName;
 
-        Product::create($input);
+        $productid = Product::create($input)->id;
+        if ($request->hasfile('gallery')) {
+            $gallery = $request->file('gallery');
+
+            foreach($gallery as $image) {
+                $name = $image->getClientOriginalName();
+                $path = $image->storeAs('uploads', $name, 'public');
+
+                Gallery::create([
+                    'product_id' => $productid,
+                    'images' => '/storage/'.$path
+                  ]);
+            }
+         }
    
         return redirect()->route('products.index')
                         ->with('success','Task created successfully.');
@@ -64,10 +84,10 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        $products = Product::find($id);
-        return view('products.show',compact('products'));
+        $product = Product::with('gallery')->where('id', '=', $id)->get();
+        return view('products.show',['products' => $product]);
     }
 
     /**

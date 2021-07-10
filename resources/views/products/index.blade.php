@@ -21,8 +21,8 @@
                 <td>{{$product->created_at}}</td>
                 <td><img src="{{url('/').'/images/'.$product->image}}" class="object-contain h-28 w-28"></td>
                 <td>
-                    <a href="{{ route('products.edit',$product->id) }}">
-                        <i class="far fa-edit"></i>
+                    <a href="{{ route('products.show',$product->id) }}">
+                        <i class="far fa-edit">show</i>
                     </a>                          
                     <form action="{{ route('products.destroy',$product->id) }}" method="POST">
                         {{-- @csrf
