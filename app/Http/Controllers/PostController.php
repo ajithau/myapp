@@ -18,11 +18,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        // DB::enableQueryLog();
+        DB::enableQueryLog();
         $posts = Post::get();
         return view('posts/index', ['posts' => $posts]);
 
-        // $query = DB::getQueryLog();
+        $query = DB::getQueryLog();
     }
 
     /**
